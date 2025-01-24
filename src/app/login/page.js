@@ -1,14 +1,34 @@
 "use client";
 
+import { useState } from "react";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { NEXT_BASE_URL } from "@/utils/constant";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    router.push("/dashboard");
+
+    await axios
+      .post(`${NEXT_BASE_URL}/login`, user)
+      .then((response) => {
+        sessionStorage.setItem("token", response.data.token);
+        router.push("/dashboard");
+      })
+      .catch((msg) => {
+        alert(JSON.stringify(msg));
+      });
+  };
+
+  const handleOnChange = (name, value) => {
+    setUser({ ...user, [name]: value });
   };
 
   const handleRegister = (e) => {
@@ -28,19 +48,19 @@ export default function LoginPage() {
               <input
                 type="email"
                 className="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
+                id="email"
+                name="email"
+                onChange={(e) => handleOnChange(e.target.name, e.target.value)}
               />
-              <div id="emailHelp" className="form-text">
-                We'll never share your email with anyone else.
-              </div>
             </div>
             <div className="mb-3">
               <label className="form-label">Password</label>
               <input
                 type="password"
                 className="form-control"
-                id="exampleInputPassword1"
+                id="password"
+                name="password"
+                onChange={(e) => handleOnChange(e.target.name, e.target.value)}
               />
             </div>
             <div className="mb-2">
