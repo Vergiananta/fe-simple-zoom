@@ -26,7 +26,11 @@ export default function Register() {
         router.push("/login");
       })
       .catch((msg) => {
-        alert(msg.validation);
+        if (msg.validations?.Password && msg.validations?.Email) {
+          alert(
+            `Your Email: ${msg.validations?.Email} and email: ${msg.validations?.Email}`
+          );
+        }
       });
   };
 
@@ -83,7 +87,11 @@ export default function Register() {
                 </a>
               </small>
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={user.password.length < 6}
+            >
               Submit
             </button>
           </form>
