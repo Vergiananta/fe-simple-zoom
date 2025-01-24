@@ -1,10 +1,19 @@
+"use client";
+
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
+  const handleRouting = () => {
+    router.push("/profile");
+  };
   return (
     <main className={styles.main}>
       <div className={styles.description}>
+        <button onClick={handleRouting}>routing</button>
         <p>
           Get started by editing&nbsp;
           <code className={styles.code}>src/app/page.js</code>
